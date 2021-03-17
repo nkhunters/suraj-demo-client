@@ -1,0 +1,138 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400&display=swap");
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+.lgn-cntnr-fld {
+  height: 100vh;
+}
+.designed-img {
+  height: 90%;
+  width: 100%;
+}
+
+.login-rw1-col-1-gsnow {
+  padding: 100px 125px 125px 125px;
+  font-size: 30px;
+  font-weight: 600;
+  color: #352d94;
+}
+
+.gsnow-span-text {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 200;
+  line-height: 6px;
+  letter-spacing: 0em;
+  text-align: center;
+  color: #000000;
+}
+
+.line1 {
+  width: 159px;
+  height: 4px;
+  margin: auto;
+  margin-top: 5px;
+  background: #352d94;
+}
+
+.form-inpts-login {
+  margin-top: -6rem;
+}
+
+.lgn-inpts {
+  width: 527px;
+  height: 50px;
+  background: #f5f8ff;
+  border: 1px solid #c6d7ff;
+  border-radius: 8px;
+  margin: auto;
+}
+
+.forget-pswrd {
+  width: 147.89px;
+  height: 19.12px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 16px;
+  align-items: right;
+  margin-inline-start: auto;
+  color: #49429e;
+  margin-top: 10px;
+  margin-right: 25px;
+}
+.btn-login-and-text {
+  text-align-last: center;
+}
+
+.lgn-btn {
+  width: 527px;
+  height: 50px;
+  background: #352d94;
+  border-radius: 8px;
+  margin-left: auto;
+  border: none;
+  outline: none;
+  color: white;
+}
+
+.p-or-text {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.logo-icons-lgn {
+  text-align-last: center;
+  margin-left: 1rem;
+}
+
+.logo-icons-lgn-all {
+  margin-right: 10px;
+}
+
+.logo-icons-lgn-offc {
+  margin-left: -1rem;
+}
+
+.lng-btm {
+  text-align: center;
+
+  margin-top: 1rem;
+}
+
+.lng-btm-span-text {
+  color: #308bcf;
+}
+
+@media (max-width: 599px) {
+  .login-rw1-col-1-gsnow {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .gsnow-span-text {
+    font-size: 12px;
+  }
+
+  .line1 {
+    width: 60px;
+    height: 2px;
+  }
+
+  .lgn-inpts {
+    width: 327px;
+    height: 50px;
+    background: #f5f8ff;
+    border: 1px solid #c6d7ff;
+    border-radius: 8px;
+    margin: auto;
+  }
+
+  .lgn-btn {
+    width: 327px;
+    height: 50px;
+    background: #352d94;
+    border-radius: 8px;
+  }
+}

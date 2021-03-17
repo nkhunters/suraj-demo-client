@@ -1,0 +1,21 @@
+.radio-btns-text {
+  display: flex;
+  margin-left: 3rem;
+  margin-bottom: 1rem;
+}
+
+.sgnup-agree-text {
+  font-weight: 200;
+  font-size: 13px;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.radio-btn-chkd > .MuiSvgIcon-root {
+  color: #352d94;
+  margin-right: 1rem;
+}
+
+.custom-password {
+  border: none;
+}

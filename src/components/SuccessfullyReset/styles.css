@@ -1,0 +1,13 @@
+.cngrts-text {
+  font-size: 22px;
+}
+
+.btn-cnt-lgn {
+  margin-top: -5rem;
+}
+
+.cngrts-text > .MuiSvgIcon-root {
+  color: #4e7bf2 !important;
+  text-align: center;
+  font-size: 40px;
+}

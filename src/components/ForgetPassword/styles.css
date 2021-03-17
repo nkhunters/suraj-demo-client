@@ -1,0 +1,33 @@
+.forgetpassword-detail-desc {
+  margin-top: 1rem;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  color: #444444;
+  text-align: left;
+}
+
+.fgt-pswrd-inpt {
+  width: 400px;
+  margin-top: -3rem;
+}
+
+.frgt-pswrd-btn {
+  width: 400px;
+}
+
+@media (max-width: 512px) {
+  .fgt-pswrd-inpt {
+    width: 200px;
+    margin-top: -3rem;
+  }
+
+  .frgt-pswrd-btn {
+    width: 200px;
+  }
+
+  .forgetpassword-detail-desc {
+    font-size: 10px;
+  }
+}
