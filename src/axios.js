@@ -1,5 +1,5 @@
 import axios from 'axios';
-export const SITE_BASE_URL = "http://13.232.103.20"
+export const SITE_BASE_URL = "http://mydemohosting.s3-website.ap-south-1.amazonaws.com/"
 
 const instance = axios.create({
     baseURL: 'http://13.232.103.20/api/'
