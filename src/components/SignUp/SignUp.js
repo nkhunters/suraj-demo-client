@@ -7,7 +7,6 @@ import office365 from '../../Assets/office365.png';
 import PasswordStrengthBar from 'react-password-strength-bar';
 import { Link } from "react-router-dom";
 import { RadioGroup, FormControlLabel, Radio } from "@material-ui/core";
-import axios from "../../axios";
 
 const SignUp = () => {
 
