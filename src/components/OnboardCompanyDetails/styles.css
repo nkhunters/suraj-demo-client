@@ -1,0 +1,163 @@
+.ocd-col-1 {
+  background: #352d94;
+  padding: 2rem;
+}
+
+.img-logo {
+  height: 30px;
+}
+
+.ocd-col-1 > h6 {
+  font-style: normal;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 32px;
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+}
+
+.ocd-slider {
+  background: #352d94;
+  border: 1px solid #b9b6ec;
+  box-sizing: border-box;
+  border-radius: 100px;
+  width: 320px;
+  margin-left: 3rem;
+  height: 4px;
+  color: white;
+  text-align: right;
+}
+
+.ocd-circle-text {
+  display: flex;
+}
+
+.ocd-circle {
+  border: 1px solid white;
+  margin-top: 2rem;
+}
+
+.ocd-slider-text {
+  display: flex;
+}
+
+.ocd-slider-text > p {
+  color: white;
+  margin-top: -5px;
+  margin-left: 1rem;
+  font-size: 10px;
+}
+
+.ocd-rw1-col-2 {
+  padding: 2rem;
+  justify-content: center;
+}
+.title-box > h4 {
+  color: #8493a8;
+  margin-left: 1rem;
+}
+
+.title-box {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.ocd-form {
+  margin-top: 1rem;
+}
+
+.ocd-form-inputs {
+  margin-bottom: 2rem;
+}
+
+.text-area-ocd {
+  background: #f5f8ff;
+  align-self: center;
+  border: 1px solid #c6d7ff;
+  box-sizing: border-box;
+  border-radius: 8px;
+  height: 96px;
+  width: 540px;
+  border-radius: 8px;
+}
+
+.ocd-label-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.ocd-btns {
+  display: flex;
+}
+
+.ocd-btns > button {
+  background: #95b4ff;
+  border-radius: 8px;
+  height: 45px;
+  width: 150px;
+  border-radius: 8px;
+  color: white;
+  outline: none;
+  margin-right: 1rem;
+  border: none;
+}
+
+.divider-line {
+  width: 1080px;
+  height: 1px;
+  background: #c6d7ff;
+}
+
+.oct-btm-btn-1 {
+  height: 48px;
+  width: 90px;
+  border-radius: 8px;
+  border: 1px solid #cad3df;
+  margin-right: 2rem;
+  margin-top: 1rem;
+  color: #8493a8;
+}
+
+.oct-btm-btn-2 {
+  background: #ffffff;
+  height: 48px;
+  width: 220px;
+  border-radius: 8px;
+  border: 1px solid #cad3df;
+  color: #8493a8;
+  margin-top: 1rem;
+}
+
+.oct-btm-btn-3 {
+  background: #d7d4f5;
+  height: 48px;
+  width: 220px;
+  border-radius: 8px;
+  border: 1px solid #cad3df;
+  color: #8493a8;
+  margin-top: 1rem;
+  margin-left: 10rem;
+}
+
+@media (max-width: 992px) {
+  .divider-line {
+    display: none;
+  }
+}
+
+@media (max-width: 512px) {
+  .text-area-ocd {
+    width: 150px;
+    margin-bottom: 8rem;
+  }
+  .ocd-btns {
+    display: block;
+  }
+  .oct-btm-btn-3 {
+    width: 100px;
+  }
+}
