@@ -6,13 +6,17 @@ import Linkdin from "../../Assets/Linkdin.png";
 import office365 from "../../Assets/office365.png";
 import { Link } from "react-router-dom";
 import axios from "../../axios";
+import { useHistory } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [disabled, setDisabled] = useState(false);
 
-  const login = () => {
+  const history = useHistory();
+
+  const login = (e) => {
+    e.preventDefault();
     setDisabled(true);
     axios
       .post("login", { email, password })
@@ -20,7 +24,9 @@ const Login = () => {
         setDisabled(false);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("userId", response.data.user._id);
-        alert("Login success");
+        localStorage.setItem("name", response.data.user.name);
+
+        history.push("/founderonboard");
       })
       .catch((err) => {
         setDisabled(false);
@@ -39,7 +45,7 @@ const Login = () => {
             <br />
             <div className="line1"></div>
           </h6>
-          <form className="form-inpts-login">
+          <form className="form-inpts-login" onSubmit={(e) => login(e)}>
             <div class="mb-3">
               <input
                 type="email"
@@ -64,22 +70,25 @@ const Login = () => {
                 <p className="forget-pswrd">Forget password?</p>
               </Link>
             </div>
+
+            <div className="btn-login-and-text">
+              <button class="lgn-btn" type="submit" disabled={disabled}>
+                Login
+              </button>
+
+              <p className="p-or-text">Or login with</p>
+            </div>
+
+            <div className="logo-icons-lgn">
+              <img className="logo-icons-lgn-all" src={googlelogo} alt="logo" />
+              <img className="logo-icons-lgn-all" src={Linkdin} alt="logo" />
+              <img
+                className="logo-icons-lgn-all logo-icons-lgn-offc"
+                src={office365}
+                alt="logo"
+              />
+            </div>
           </form>
-          <div className="btn-login-and-text">
-            <button class="lgn-btn" disabled={disabled} onClick={() => login()}>
-              Login
-            </button>
-            <p className="p-or-text">Or login with</p>
-          </div>
-          <div className="logo-icons-lgn">
-            <img className="logo-icons-lgn-all" src={googlelogo} alt="logo" />
-            <img className="logo-icons-lgn-all" src={Linkdin} alt="logo" />
-            <img
-              className="logo-icons-lgn-all logo-icons-lgn-offc"
-              src={office365}
-              alt="logo"
-            />
-          </div>
           <div className="lng-btm">
             <p>
               Don't have an account?{" "}

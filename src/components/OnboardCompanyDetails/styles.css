@@ -113,8 +113,7 @@
 }
 
 .oct-btm-btn-1 {
-  height: 48px;
-  width: 90px;
+  padding: 10px 30px 10px 30px;
   border-radius: 8px;
   border: 1px solid #cad3df;
   margin-right: 2rem;
@@ -123,24 +122,19 @@
 }
 
 .oct-btm-btn-2 {
-  background: #ffffff;
-  height: 48px;
-  width: 220px;
+  padding: 10px 30px 10px 30px;
   border-radius: 8px;
   border: 1px solid #cad3df;
-  color: #8493a8;
   margin-top: 1rem;
+ float: left;
 }
 
 .oct-btm-btn-3 {
-  background: #d7d4f5;
-  height: 48px;
-  width: 220px;
+  padding: 10px 30px 10px 30px;
   border-radius: 8px;
   border: 1px solid #cad3df;
-  color: #8493a8;
   margin-top: 1rem;
-  margin-left: 10rem;
+ float: right;
 }
 
 @media (max-width: 992px) {
