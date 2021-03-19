@@ -9,6 +9,8 @@ import { Link } from "react-router-dom";
 import { RadioGroup, FormControlLabel, Radio } from "@material-ui/core";
 import axios from "../../axios";
 import { useHistory } from "react-router-dom";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -16,8 +18,30 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [type, setType] = useState("investor");
   const [disabled, setDisabled] = useState(false);
+  const [isEmailValidated, setEmailValidated] = useState(false);
+  const [isSuccess, setSuccess] = useState(false);
+  const [responseMsg, setResponseMsg] = useState("");
+  const [isOpen, setOpen] = useState(false);
 
   const history = useHistory();
+
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+    if (isSuccess) history.push("/login");
+  };
+
+  function validateEmail(value) {
+    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
+      setEmailValidated(false);
+    } else setEmailValidated(true);
+  }
 
   const signup = (e) => {
     e.preventDefault();
@@ -29,20 +53,33 @@ const SignUp = () => {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("userId", response.data.user._id);
         localStorage.setItem("name", response.data.user.name);
-        alert(
+        setSuccess(true);
+        setResponseMsg(
           "Account created successfully. An email verification link has been sent to your email, please verify your email and login."
         );
-        history.push("/login");
+        setOpen(true);
       })
       .catch((err) => {
         setDisabled(false);
-        alert("Email already exists.");
+        setSuccess(false);
+        setResponseMsg("Someone's already using this email.");
+        setOpen(true);
         console.log(err);
       });
   };
 
   return (
     <div className="container-fluid lgn-cntnr-fld justify-center">
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "left" }}
+        open={isOpen}
+        autoHideDuration={10000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity={isSuccess ? "success" : "error"}>
+          {responseMsg}
+        </Alert>
+      </Snackbar>
       <div className="row login-rw1 justify-center">
         <div className="col-lg-6 col-md-6 col-sm-12 login-rw1-col-1">
           <h6 className="login-rw1-col-1-gsnow text-center">
@@ -55,11 +92,11 @@ const SignUp = () => {
             <div className="line1"></div>
           </h6>
           <form className="form-inpts-login" onSubmit={(e) => signup(e)}>
-            <div class="mb-3">
+            <div className="mb-3">
               <input
                 type="text"
                 placeholder="Full Name"
-                class="form-control lgn-inpts"
+                className="form-control lgn-inpts"
                 id="exampleInputEmail1"
                 aria-describedby="emailHelp"
                 name="name"
@@ -68,31 +105,44 @@ const SignUp = () => {
                 required
               />
             </div>
-            <div class="mb-3">
+            <div className="mb-3">
               <input
                 type="email"
                 placeholder="Email address"
-                class="form-control lgn-inpts"
+                className={`form-control lgn-inpts ${
+                  !isEmailValidated && "is-invalid"
+                }`}
                 id="exampleInputEmail1"
                 aria-describedby="emailHelp"
                 name="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  validateEmail(e.target.value);
+                }}
                 required
               />
+              {!isEmailValidated && (
+                <div
+                  className="invalid-feedback"
+                  style={{ margin: "auto", width: "527px" }}
+                >
+                  Invalid email address
+                </div>
+              )}
             </div>
-            <div class="mb-3 lgn-btn-head">
+            <div className="mb-3 lgn-btn-head">
               <input
                 type="password"
                 placeholder="Password"
-                class="form-control lgn-inpts"
+                className="form-control lgn-inpts"
                 id="exampleInputPassword1"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
-            <div class="mb-3 lgn-btn-head">
+            <div className="mb-3 lgn-btn-head">
               <PasswordStrengthBar
                 password={password}
                 style={{ width: "527px", margin: "auto" }}
@@ -130,11 +180,7 @@ const SignUp = () => {
             </p>
 
             <div className="btn-login-and-text">
-              <button
-                class="lgn-btn"
-                disabled={disabled}
-                type="submit"
-              >
+              <button className="lgn-btn" disabled={disabled} type="submit">
                 Create new account
               </button>
               <p className="p-or-text">Or sign up with</p>

@@ -7,13 +7,34 @@ import office365 from "../../Assets/office365.png";
 import { Link } from "react-router-dom";
 import axios from "../../axios";
 import { useHistory } from "react-router-dom";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [disabled, setDisabled] = useState(false);
+  const [isEmailValidated, setEmailValidated] = useState(false);
+  const [isOpen, setOpen] = useState(false);
 
   const history = useHistory();
+
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+
+  function validateEmail(value) {
+    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
+      setEmailValidated(false);
+    } else setEmailValidated(true);
+  }
 
   const login = (e) => {
     e.preventDefault();
@@ -30,12 +51,22 @@ const Login = () => {
       })
       .catch((err) => {
         setDisabled(false);
-        alert("Invalid Email or Password");
+        setOpen(true);
       });
   };
 
   return (
     <div className="container-fluid lgn-cntnr-fld justify-center">
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "left" }}
+        open={isOpen}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity={"error"}>
+          Invalid Email or Password. Please try again.
+        </Alert>
+      </Snackbar>
       <div className="row login-rw1 justify-center">
         <div className="col-lg-6 col-md-6 col-sm-12 login-rw1-col-1">
           <h6 className="login-rw1-col-1-gsnow text-center">
@@ -50,12 +81,25 @@ const Login = () => {
               <input
                 type="email"
                 placeholder="Email address"
-                class="form-control lgn-inpts"
+                className={`form-control lgn-inpts ${
+                  !isEmailValidated && "is-invalid"
+                }`}
                 id="exampleInputEmail1"
                 aria-describedby="emailHelp"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  validateEmail(e.target.value);
+                }}
               />
+              {!isEmailValidated && (
+                <div
+                  className="invalid-feedback"
+                  style={{ margin: "auto", width: "527px" }}
+                >
+                  Invalid email address
+                </div>
+              )}
             </div>
             <div class="mb-3 lgn-btn-head">
               <input

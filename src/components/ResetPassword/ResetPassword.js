@@ -3,6 +3,8 @@ import "./styles.css";
 import DesignImg from "../../Assets/designimg.jpg";
 import axios from "../../axios";
 import { useParams, useHistory } from "react-router-dom";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
@@ -10,6 +12,21 @@ const ResetPassword = () => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [userId, setUserId] = useState(null);
   const [isTokenValid, setTokenValid] = useState(false);
+  const [isSuccess, setSuccess] = useState(false);
+  const [responseMsg, setResponseMsg] = useState("");
+  const [isOpen, setOpen] = useState(false);
+
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+    if (!isTokenValid) history.push("/");
+  };
 
   let { token } = useParams();
   const history = useHistory();
@@ -27,8 +44,10 @@ const ResetPassword = () => {
           setTokenValid(true);
         } else {
           setTokenValid(false);
-          alert("Password reset link is invalid or has expired");
-          history.push("/");
+
+          setSuccess(false);
+          setResponseMsg("Password reset link is invalid or has expired.");
+          setOpen(true);
         }
       })
       .catch((error) => {
@@ -37,9 +56,11 @@ const ResetPassword = () => {
   }, []);
 
   const resetPassword = () => {
-    if (password !== confirmPassword)
-      alert("Password and Confirm Password didn't matched");
-    else {
+    if (password !== confirmPassword) {
+      setSuccess(false);
+      setResponseMsg("Password and Confirm Password didn't matched.");
+      setOpen(true);
+    } else {
       setButtonDisabled(true);
       axios
         .put("updatePasswordViaEmail", { userId, password })
@@ -49,12 +70,16 @@ const ResetPassword = () => {
           if (response.data === "Password updated") {
             history.push("/resetsuccessfully");
           } else {
-            alert("Something went wrong. Please try again");
+            setSuccess(false);
+            setResponseMsg("Something went wrong. Please try again.");
+            setOpen(true);
           }
         })
         .catch((error) => {
           setButtonDisabled(false);
-          alert("Something went wrong. Please try again");
+          setSuccess(false);
+          setResponseMsg("Something went wrong. Please try again.");
+          setOpen(true);
           console.log(error.data);
         });
     }
@@ -62,6 +87,16 @@ const ResetPassword = () => {
 
   return (
     <div className="container-fluid lgn-cntnr-fld justify-center">
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "left" }}
+        open={isOpen}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity={isSuccess ? "success" : "error"}>
+          {responseMsg}
+        </Alert>
+      </Snackbar>
       <div className="row login-rw1 justify-center">
         <div className="col-lg-6 col-md-6 col-sm-12 login-rw1-col-1">
           <h6 className="login-rw1-col-1-gsnow text-center">

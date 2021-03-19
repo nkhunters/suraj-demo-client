@@ -6,6 +6,8 @@ import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { saveCompanyDetails } from "../../store/actions/CompanyDetails";
 import axios from "../../axios";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 const OnboardCompanyDetails2 = (props) => {
   const [country, setCountry] = useState(props?.companyDetails?.country);
@@ -16,6 +18,18 @@ const OnboardCompanyDetails2 = (props) => {
     props?.companyDetails?.contactPerson
   );
   const [disabled, setDisabled] = useState(false);
+  const [isOpen, setOpen] = useState(false);
+
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
 
   const history = useHistory();
 
@@ -31,16 +45,34 @@ const OnboardCompanyDetails2 = (props) => {
     };
     props.saveDetails(details);
     const userId = localStorage.getItem("userId");
-    axios.post("updateCompanyDetails", {...props.companyDetails, ...details, userId})
-    .then(response => {
-      setDisabled(false);
-      alert("Details Saved Successfully");
-    })
-    .catch(err => {setDisabled(false);console.log(err);})
+    axios
+      .post("updateCompanyDetails", {
+        ...props.companyDetails,
+        ...details,
+        userId,
+      })
+      .then((response) => {
+        setDisabled(false);
+        setOpen(true);
+      })
+      .catch((err) => {
+        setDisabled(false);
+        console.log(err);
+      });
   };
 
   return (
     <div className="container-fluid">
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "left" }}
+        open={isOpen}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity={"success"}>
+          Details Saved Successfully.
+        </Alert>
+      </Snackbar>
       <div className="row">
         <div className="col-lg-4 col-md-12 col-sm-12 fo-rw1-col-1 ocd-col-1">
           <img className="img-logo" src={LogoImage} alt="" />
@@ -242,23 +274,23 @@ const OnboardCompanyDetails2 = (props) => {
                 onChange={(e) => setContactPerson(e.target.value)}
                 required
               />
-              </div>
-              <div className="divider-line"></div>
+            </div>
+            <div className="divider-line"></div>
 
-              <button
-                className="btn btn-primary oct-btm-btn-3"
-                disabled={disabled}
-                type="submit"
-              >
-                Submit
-              </button>
+            <button
+              className="btn btn-primary oct-btm-btn-3"
+              disabled={disabled}
+              type="submit"
+            >
+              Submit
+            </button>
           </form>
           <button
-                className="btn btn-primary oct-btm-btn-2"
-                onClick={() => history.goBack()}
-              >
-                Step Back
-              </button>
+            className="btn btn-primary oct-btm-btn-2"
+            onClick={() => history.goBack()}
+          >
+            Step Back
+          </button>
         </div>
       </div>
     </div>
