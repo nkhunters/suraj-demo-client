@@ -41,6 +41,14 @@ const OnboardCompanyDetails = (props) => {
       <div className="row">
         <div className="col-lg-4 col-md-12 col-sm-12 fo-rw1-col-1 ocd-col-1">
           <img className="img-logo" src={LogoImage} alt="" />
+          <button
+              className="btn btn-primary oct-btm-btn-3 float-right"
+              onClick={() => {
+                history.push("/login");
+              }}
+            >
+              Logout
+            </button>
           <h6>
             Welcome to DueDash,{" "}
             {localStorage.getItem("name").includes(" ")
