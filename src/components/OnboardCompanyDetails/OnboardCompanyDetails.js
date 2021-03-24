@@ -48,6 +48,7 @@ const OnboardCompanyDetails = (props) => {
   const [specialization, setSpecialization] = useState(specializations[0]);
   const [businessModel, setBusinessModel] = useState([]);
   const [revenueStream, setRevenueStreams] = useState([]);
+  const [percentage, setPercentage] = useState(0);
 
   const disabledColor = "#827BDD";
 
@@ -60,14 +61,45 @@ const OnboardCompanyDetails = (props) => {
       })
       .then((response) => {
         if (response.data.companyDetails) {
-          setCompanyName(response.data.companyDetails.companyName ? response.data.companyDetails.companyName : "");
-          setDbaName(response.data.companyDetails.dbaName ? response.data.companyDetails.dbaName : "");
-          setWebsiteUrl(response.data.companyDetails.websiteUrl ? response.data.companyDetails.websiteUrl : "");
-          setSector(response.data.companyDetails.sector ? response.data.companyDetails.sector : sectors[0]);
-          setSpecialization(response.data.companyDetails.specialization ? response.data.companyDetails.specialization : specializations[0]);
-          setBusinessModel(response.data.companyDetails.businessModel ? response.data.companyDetails.businessModel : []);
-          setRevenueStreams(response.data.companyDetails.revenueStream ? response.data.companyDetails.revenueStream : []);
+          setCompanyName(
+            response.data.companyDetails.companyName
+              ? response.data.companyDetails.companyName
+              : ""
+          );
+          setDbaName(
+            response.data.companyDetails.dbaName
+              ? response.data.companyDetails.dbaName
+              : ""
+          );
+          setWebsiteUrl(
+            response.data.companyDetails.websiteUrl
+              ? response.data.companyDetails.websiteUrl
+              : ""
+          );
+          setSector(
+            response.data.companyDetails.sector
+              ? response.data.companyDetails.sector
+              : sectors[0]
+          );
+          setSpecialization(
+            response.data.companyDetails.specialization
+              ? response.data.companyDetails.specialization
+              : specializations[0]
+          );
+          setBusinessModel(
+            response.data.companyDetails.businessModel
+              ? response.data.companyDetails.businessModel
+              : []
+          );
+          setRevenueStreams(
+            response.data.companyDetails.revenueStream
+              ? response.data.companyDetails.revenueStream
+              : []
+          );
         }
+
+        if (response.data.companyDetails.companyName) setPercentage(50);
+        if (response.data.companyDetails.companyRegNo) setPercentage(100);
       })
       .catch((err) => {
         console.log(err);
@@ -129,8 +161,8 @@ const OnboardCompanyDetails = (props) => {
               </p>
             </div>
             <div className="ocd-slider-text">
-              <div className="ocd-slider"></div>
-              <p>0%</p>
+              <div className={percentage === 0 ? "ocd-slider" : percentage === 50 ? "ocd-slider-50" : "ocd-slider-100"}></div>
+              <p>{percentage}%</p>
             </div>
           </div>
 

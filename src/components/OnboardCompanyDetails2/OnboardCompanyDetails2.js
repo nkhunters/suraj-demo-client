@@ -53,6 +53,7 @@ const OnboardCompanyDetails2 = (props) => {
   const [contactPersonName, setContactPersonName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [companyPhone, setCompanyPhone] = useState("");
+  const [percentage, setPercentage] = useState(0);
   const [disabled, setDisabled] = useState(false);
   const [isOpen, setOpen] = useState(false);
 
@@ -82,14 +83,17 @@ const OnboardCompanyDetails2 = (props) => {
       })
       .then((response) => {
         if (response.data.companyDetails) {
-          setDateFounded(new Date(response?.data?.companyDetails?.dateFounded));
-          setCompanyRegNo(response?.data?.companyDetails?.companyRegNo);
-          setCountry(countries.find(el => el.label === response?.data?.companyDetails?.country));
-          setCity(response?.data?.companyDetails?.city);
-          setContactPersonName(response?.data?.companyDetails?.contactPersonName);
-          setContactEmail(response?.data?.companyDetails?.contactEmail);
-          setCompanyPhone(response?.data?.companyDetails?.companyPhone);
+          setDateFounded(response.data.companyDetails.dateFounded ? new Date(response.data.companyDetails.dateFounded) : new Date());
+          setCompanyRegNo(response.data.companyDetails.companyRegNo ? response.data.companyDetails.companyRegNo : "");
+          setCountry(response.data.companyDetails.country ? countries.find(el => el.label === response.data.companyDetails.country) : countries[0]);
+          setCity(response.data.companyDetails.city ? response.data.companyDetails.city : "");
+          setContactPersonName(response.data.companyDetails.contactPersonName ? response.data.companyDetails.contactPersonName : "");
+          setContactEmail(response.data.companyDetails.contactEmail ? response.data.companyDetails.contactEmail : "");
+          setCompanyPhone(response.data.companyDetails.companyPhone ? response.data.companyDetails.companyPhone : "");
         }
+
+        if (response.data.companyDetails.companyName) setPercentage(50);
+        if (response.data.companyDetails.companyRegNo) setPercentage(100);
       })
       .catch((err) => {
         console.log(err);
@@ -119,6 +123,7 @@ const OnboardCompanyDetails2 = (props) => {
       .then((response) => {
         setDisabled(false);
         setOpen(true);
+        setPercentage(100);
       })
       .catch((err) => {
         setDisabled(false);
@@ -165,8 +170,8 @@ const OnboardCompanyDetails2 = (props) => {
               </p>
             </div>
             <div className="ocd-slider-text">
-              <div className="ocd-slider"></div>
-              <p>0%</p>
+            <div className={percentage === 0 ? "ocd-slider" : percentage === 50 ? "ocd-slider-50" : "ocd-slider-100"}></div>
+              <p>{percentage}%</p>
             </div>
           </div>
 
