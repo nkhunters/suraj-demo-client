@@ -1,39 +1,104 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./styles.css";
 import LogoImage from "../../Assets/titlelogo.png";
 import BoxesImg from "../../Assets/boxes.png";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { saveCompanyDetails } from "../../store/actions/CompanyDetails";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import { makeStyles } from "@material-ui/core/styles";
+import Chip from "@material-ui/core/Chip";
+import axios from "../../axios";
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+    maxWidth: 300,
+  },
+  chips: {
+    display: "flex",
+    flexWrap: "wrap",
+  },
+  chip: {
+    margin: 2,
+  },
+  noLabel: {
+    marginTop: theme.spacing(3),
+  },
+  option: {
+    width: "527px",
+    fontSize: 15,
+    background: "white",
+    "& > span": {
+      marginRight: 10,
+      fontSize: 18,
+    },
+  },
+}));
 
 const OnboardCompanyDetails = (props) => {
-  const [company, setCompany] = useState(props?.companyDetails?.company);
-  const [sector, setSector] = useState(props?.companyDetails?.sector);
-  const [specialization, setSpecialization] = useState(
-    props?.companyDetails?.specialization
-  );
-  const [technology, setTechnology] = useState(
-    props?.companyDetails?.technology
-  );
-  const [businessModel, setBusinessModel] = useState(
-    props?.companyDetails?.businessModel
-  );
+  const classes = useStyles();
+
+  const [companyName, setCompanyName] = useState("");
+  const [dbaName, setDbaName] = useState("");
+  const [websiteUrl, setWebsiteUrl] = useState("");
+  const [sector, setSector] = useState(sectors[0]);
+  const [specialization, setSpecialization] = useState(specializations[0]);
+  const [businessModel, setBusinessModel] = useState([]);
+  const [revenueStream, setRevenueStreams] = useState([]);
 
   const disabledColor = "#827BDD";
 
   const history = useHistory();
 
+  useEffect(() => {
+    axios
+      .post("getCompanyDetails", {
+        userId: localStorage.getItem("userId"),
+      })
+      .then((response) => {
+        if (response.data.companyDetails) {
+          setCompanyName(response.data.companyDetails.companyName ? response.data.companyDetails.companyName : "");
+          setDbaName(response.data.companyDetails.dbaName ? response.data.companyDetails.dbaName : "");
+          setWebsiteUrl(response.data.companyDetails.websiteUrl ? response.data.companyDetails.websiteUrl : "");
+          setSector(response.data.companyDetails.sector ? response.data.companyDetails.sector : sectors[0]);
+          setSpecialization(response.data.companyDetails.specialization ? response.data.companyDetails.specialization : specializations[0]);
+          setBusinessModel(response.data.companyDetails.businessModel ? response.data.companyDetails.businessModel : []);
+          setRevenueStreams(response.data.companyDetails.revenueStream ? response.data.companyDetails.revenueStream : []);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   const saveDetails = (e) => {
     e.preventDefault();
-    const details = {
-      company,
+    const data = {
+      companyName,
+      dbaName,
+      websiteUrl,
       sector,
       specialization,
-      technology,
       businessModel,
+      revenueStream,
     };
-    props.saveDetails(details);
-    history.push("/onboardcompanydetails2");
+
+    console.log(data);
+
+    axios
+      .post("updateCompanyDetails", {
+        ...data,
+        userId: localStorage.getItem("userId"),
+      })
+      .then((response) => {
+        history.push("/onboardcompanydetails2");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -42,13 +107,13 @@ const OnboardCompanyDetails = (props) => {
         <div className="col-lg-4 col-md-12 col-sm-12 fo-rw1-col-1 ocd-col-1">
           <img className="img-logo" src={LogoImage} alt="" />
           <button
-              className="btn btn-primary oct-btm-btn-3 float-right"
-              onClick={() => {
-                history.push("/login");
-              }}
-            >
-              Logout
-            </button>
+            className="btn btn-primary oct-btm-btn-3 float-right"
+            onClick={() => {
+              history.push("/login");
+            }}
+          >
+            Logout
+          </button>
           <h6>
             Welcome to DueDash,{" "}
             {localStorage.getItem("name").includes(" ")
@@ -154,15 +219,16 @@ const OnboardCompanyDetails = (props) => {
               </label>
               <input
                 type="text"
-                placeholder="Mobile Technology"
+                placeholder="Company Name"
                 className="form-control ocd-form-inputs lgn-inpts"
                 id="exampleInputEmail1"
                 aria-describedby="emailHelp"
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
                 required
               />
             </div>
+
             <div className="mb-3">
               <label
                 style={{
@@ -171,81 +237,230 @@ const OnboardCompanyDetails = (props) => {
                   color: "#8493A8",
                 }}
               >
-                What is your sector?*
+                DBA (doing business as) name*
               </label>
               <input
                 type="text"
-                placeholder="Banking"
+                placeholder="DBA (doing business as) name"
                 className="form-control ocd-form-inputs lgn-inpts"
                 id="exampleInputEmail1"
                 aria-describedby="emailHelp"
-                value={sector}
-                onChange={(e) => setSector(e.target.value)}
+                value={dbaName}
+                onChange={(e) => setDbaName(e.target.value)}
                 required
               />
             </div>
-            <div className="mb-3 lgn-btn-head">
+
+            <div className="mb-3">
               <label
                 style={{
                   marginLeft: "10rem",
                   fontSize: "12px",
+                  color: "#8493A8",
+                }}
+              >
+                Website URL
+              </label>
+              <input
+                type="text"
+                placeholder="Website URL"
+                className="form-control ocd-form-inputs lgn-inpts"
+                id="exampleInputEmail1"
+                aria-describedby="emailHelp"
+                value={websiteUrl}
+                onChange={(e) => setWebsiteUrl(e.target.value)}
+              />
+            </div>
+
+            <div className="mb-3">
+              <label
+                style={{
+                  marginLeft: "10rem",
+                  marginBottom: "0.5rem",
+                  fontSize: "12px",
+                  color: "#8493A8",
+                }}
+              >
+                What is your sector?*
+              </label>
+
+              <Autocomplete
+                id="sector-autocomplete"
+                options={sectors}
+                value={sector}
+                onChange={(event, newValue) => {
+                  setSector(newValue);
+                }}
+                className="lgn-inpts"
+                style={{ border: "none", outline: "none" }}
+                classes={{
+                  option: classes.option,
+                }}
+                autoHighlight
+                getOptionLabel={(option) => option}
+                renderOption={(option) => (
+                  <React.Fragment>{option}</React.Fragment>
+                )}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    fullWidth={true}
+                    placeholder="Sector"
+                    variant="outlined"
+                    inputProps={{
+                      ...params.inputProps,
+                      autoComplete: "new-password", // disable autocomplete and autofill
+                    }}
+                  />
+                )}
+              />
+            </div>
+
+            <div className="mb-3">
+              <label
+                style={{
+                  marginLeft: "10rem",
+                  fontSize: "12px",
+                  marginBottom: "0.5rem",
                   color: "#8493A8",
                 }}
               >
                 What is your specialization?*
               </label>
-              <input
-                type="text"
-                placeholder="Select"
-                className="form-control ocd-form-inputs lgn-inpts"
-                id="exampleInputPassword1"
+              <Autocomplete
+                id="sector-autocomplete"
+                options={specializations}
                 value={specialization}
-                onChange={(e) => setSpecialization(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="mb-3 lgn-btn-head ocd-label-text">
-              <label
-                style={{
-                  marginLeft: "10rem",
-                  fontSize: "12px",
-                  color: "#8493A8",
+                onChange={(event, newValue) => {
+                  setSpecialization(newValue);
                 }}
-              >
-                What is your technology*
-              </label>
-              <input
-                type="text"
-                placeholder="ECommerce, Social Media, Retail"
-                className="form-control ocd-form-inputs lgn-inpts"
-                id="exampleInputPassword1"
-                value={technology}
-                onChange={(e) => setTechnology(e.target.value)}
-                required
+                className="lgn-inpts"
+                style={{ border: "none", outline: "none" }}
+                classes={{
+                  option: classes.option,
+                }}
+                autoHighlight
+                getOptionLabel={(option) => option}
+                renderOption={(option) => (
+                  <React.Fragment>{option}</React.Fragment>
+                )}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    fullWidth={true}
+                    placeholder="Specialization"
+                    variant="outlined"
+                    inputProps={{
+                      ...params.inputProps,
+                      autoComplete: "new-password", // disable autocomplete and autofill
+                    }}
+                  />
+                )}
               />
             </div>
 
-            <div className="mb-3 lgn-btn-head">
+            <div className="mb-3">
               <label
                 style={{
                   marginLeft: "10rem",
                   fontSize: "12px",
                   color: "#8493A8",
+                  marginBottom: "0.5rem",
                 }}
               >
                 Business model*
               </label>
-              <input
-                type="text"
-                placeholder="Select"
-                className="form-control ocd-form-inputs lgn-inpts"
-                id="exampleInputPassword1"
+
+              <Autocomplete
+                id="business-model-autocomplete"
+                options={businessModels}
                 value={businessModel}
-                onChange={(e) => setBusinessModel(e.target.value)}
+                multiple
                 required
+                onChange={(event, newValue) => {
+                  setBusinessModel(newValue);
+                }}
+                className="lgn-inpts"
+                style={{ border: "none", outline: "none" }}
+                classes={{
+                  option: classes.option,
+                }}
+                autoHighlight
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    <Chip
+                      variant="outlined"
+                      label={option}
+                      {...getTagProps({ index })}
+                    />
+                  ))
+                }
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    fullWidth={true}
+                    placeholder="Business Model"
+                    variant="outlined"
+                    inputProps={{
+                      ...params.inputProps,
+                      autoComplete: "new-password", // disable autocomplete and autofill
+                    }}
+                  />
+                )}
               />
             </div>
+
+            <div className="mb-3">
+              <label
+                style={{
+                  marginLeft: "10rem",
+                  fontSize: "12px",
+                  color: "#8493A8",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                Revenue Streams*
+              </label>
+
+              <Autocomplete
+                id="revenue-streams-autocomplete"
+                options={revenueStreams}
+                value={revenueStream}
+                multiple
+                required
+                onChange={(event, newValue) => {
+                  setRevenueStreams(newValue);
+                }}
+                className="lgn-inpts"
+                style={{ border: "none", outline: "none" }}
+                classes={{
+                  option: classes.option,
+                }}
+                autoHighlight
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    <Chip
+                      variant="outlined"
+                      label={option}
+                      {...getTagProps({ index })}
+                    />
+                  ))
+                }
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    fullWidth={true}
+                    placeholder="Revenue Streams"
+                    variant="outlined"
+                    inputProps={{
+                      ...params.inputProps,
+                      autoComplete: "new-password", // disable autocomplete and autofill
+                    }}
+                  />
+                )}
+              />
+            </div>
+
             <div className="divider-line"></div>
 
             <button
@@ -280,3 +495,78 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(OnboardCompanyDetails);
+
+const sectors = [
+  "3D Printing",
+  "Advertising",
+  "AgTech",
+  "AI",
+  "Analytics",
+  "AR/VR",
+  "BeautyTech",
+  "Biotech",
+  "Blockchain",
+  "Autonomous Vehicles",
+  "Chemicals",
+  "CleanTech & Environment",
+  "Cloud Infrastructure",
+  "Consumer Health & Fitness",
+  "Consumer Products",
+  "Cosmetics",
+  "Cryptocurrency",
+  "Data Services",
+  "Branding & Design",
+  "Developer Tools",
+  "Distributed Workforce",
+  "E-Commerce",
+  "Education",
+  "Engineering",
+  "Tech Enterprise",
+  "Entertainment & Sports",
+  "IT",
+];
+
+const specializations = [
+  "2 Factor Authentication (2FA)",
+  "3D Animation",
+  "3D Audio Technology",
+  "3D Bio Printers",
+  "Accelerators & Incubators",
+  "Account Based Marketing",
+  "Accounts Payable Automation",
+  "Ad Exchange Platforms",
+  "Aerospace Tech",
+  "AI in Advertising and Marketing",
+  "AI in Agriculture",
+  "B2B E-Commerce",
+  "B2B Packaged Foods E-Commerce",
+  "Banking Tech",
+  "Big Data Analytics",
+  "Cloud Application Development Platforms",
+  "DevOps",
+  "Digital Media Groups",
+  "Digital Publishing Platforms",
+  "Distributed Commerce",
+  "E-Commerce Logistics",
+  "E-Commerce Marketing",
+  "E-Commerce Payment Solutions",
+  "Education",
+  "Electric Cars",
+  "Electric Motorcycles",
+  "Email Marketing",
+  "Embedded Systems for IoT",
+];
+
+const businessModels = ["B2B", "B2B2C", "B2C", "B2D", "B2G", "Other"];
+
+const revenueStreams = [
+  "Advertising",
+  "E-commerce",
+  "Enterprise",
+  "Hardware",
+  "Marketplace",
+  "Services",
+  "Subscription",
+  "Transactional",
+  "Usage-based",
+];
