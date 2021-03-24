@@ -18,7 +18,9 @@ const OnboardCompanyDetails = (props) => {
   const [businessModel, setBusinessModel] = useState(
     props?.companyDetails?.businessModel
   );
-  
+
+  const disabledColor = "#827BDD";
+
   const history = useHistory();
 
   const saveDetails = (e) => {
@@ -36,7 +38,6 @@ const OnboardCompanyDetails = (props) => {
 
   return (
     <div className="container-fluid">
-      {console.log(props.companyDetails)}
       <div className="row">
         <div className="col-lg-4 col-md-12 col-sm-12 fo-rw1-col-1 ocd-col-1">
           <img className="img-logo" src={LogoImage} alt="" />
@@ -60,12 +61,10 @@ const OnboardCompanyDetails = (props) => {
             </div>
           </div>
 
-          <div className="ocd-set ocd-set-1">
+          <div className="ocd-set ocd-set-1" style={{ color: disabledColor }}>
             <div className="ocd-circle-text">
-              <div className="fo-circle ocd-circle">2</div>
-              <p style={{ color: "white", marginTop: "1rem" }}>
-                Problem & Solution
-              </p>
+              <div className="fo-circle-disabled ocd-circle-disabled">2</div>
+              <p style={{ marginTop: "1rem" }}>Problem & Solution</p>
             </div>
             <div className="ocd-slider-text">
               <div className="ocd-slider"></div>
@@ -73,10 +72,10 @@ const OnboardCompanyDetails = (props) => {
             </div>
           </div>
 
-          <div className="ocd-set ocd-set-1">
+          <div className="ocd-set ocd-set-1" style={{ color: disabledColor }}>
             <div className="ocd-circle-text">
-              <div className="fo-circle ocd-circle">3</div>
-              <p style={{ color: "white", marginTop: "1rem" }}>Team</p>
+              <div className="fo-circle-disabled ocd-circle-disabled">3</div>
+              <p style={{ marginTop: "1rem" }}>Team</p>
             </div>
             <div className="ocd-slider-text">
               <div className="ocd-slider"></div>
@@ -84,12 +83,10 @@ const OnboardCompanyDetails = (props) => {
             </div>
           </div>
 
-          <div className="ocd-set ocd-set-1">
+          <div className="ocd-set ocd-set-1" style={{ color: disabledColor }}>
             <div className="ocd-circle-text">
-              <div className="fo-circle ocd-circle">4</div>
-              <p style={{ color: "white", marginTop: "1rem" }}>
-                Market & Competition
-              </p>
+              <div className="fo-circle-disabled ocd-circle-disabled">4</div>
+              <p style={{ marginTop: "1rem" }}>Market & Competition</p>
             </div>
             <div className="ocd-slider-text">
               <div className="ocd-slider"></div>
@@ -97,10 +94,10 @@ const OnboardCompanyDetails = (props) => {
             </div>
           </div>
 
-          <div className="ocd-set ocd-set-1">
+          <div className="ocd-set ocd-set-1" style={{ color: disabledColor }}>
             <div className="ocd-circle-text">
-              <div className="fo-circle ocd-circle">5</div>
-              <p style={{ color: "white", marginTop: "1rem" }}>Finances </p>
+              <div className="fo-circle-disabled ocd-circle-disabled">5</div>
+              <p style={{ marginTop: "1rem" }}>Finances </p>
             </div>
             <div className="ocd-slider-text">
               <div className="ocd-slider"></div>
@@ -108,10 +105,10 @@ const OnboardCompanyDetails = (props) => {
             </div>
           </div>
 
-          <div className="ocd-set ocd-set-1">
+          <div className="ocd-set ocd-set-1" style={{ color: disabledColor }}>
             <div className="ocd-circle-text">
-              <div className="fo-circle ocd-circle">6</div>
-              <p style={{ color: "white", marginTop: "1rem" }}>KPI</p>
+              <div className="fo-circle-disabled ocd-circle-disabled">6</div>
+              <p style={{ marginTop: "1rem" }}>KPI</p>
             </div>
             <div className="ocd-slider-text">
               <div className="ocd-slider"></div>
@@ -251,8 +248,8 @@ const OnboardCompanyDetails = (props) => {
             </button>
           </form>
           <button className="btn btn-primary oct-btm-btn-2 float-right">
-              Skip
-            </button>
+            Skip
+          </button>
         </div>
       </div>
     </div>

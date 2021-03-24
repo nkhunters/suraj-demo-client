@@ -20,6 +20,8 @@ const OnboardCompanyDetails2 = (props) => {
   const [disabled, setDisabled] = useState(false);
   const [isOpen, setOpen] = useState(false);
 
+  const disabledColor = "#827BDD";
+
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
@@ -96,12 +98,10 @@ const OnboardCompanyDetails2 = (props) => {
             </div>
           </div>
 
-          <div className="ocd-set ocd-set-1">
+          <div className="ocd-set ocd-set-1" style={{ color: disabledColor }}>
             <div className="ocd-circle-text">
-              <div className="fo-circle ocd-circle">2</div>
-              <p style={{ color: "white", marginTop: "1rem" }}>
-                Problem & Solution
-              </p>
+              <div className="fo-circle-disabled ocd-circle-disabled">2</div>
+              <p style={{ marginTop: "1rem" }}>Problem & Solution</p>
             </div>
             <div className="ocd-slider-text">
               <div className="ocd-slider"></div>
@@ -109,10 +109,10 @@ const OnboardCompanyDetails2 = (props) => {
             </div>
           </div>
 
-          <div className="ocd-set ocd-set-1">
+          <div className="ocd-set ocd-set-1" style={{ color: disabledColor }}>
             <div className="ocd-circle-text">
-              <div className="fo-circle ocd-circle">3</div>
-              <p style={{ color: "white", marginTop: "1rem" }}>Team</p>
+              <div className="fo-circle-disabled ocd-circle-disabled">3</div>
+              <p style={{ marginTop: "1rem" }}>Team</p>
             </div>
             <div className="ocd-slider-text">
               <div className="ocd-slider"></div>
@@ -120,12 +120,10 @@ const OnboardCompanyDetails2 = (props) => {
             </div>
           </div>
 
-          <div className="ocd-set ocd-set-1">
+          <div className="ocd-set ocd-set-1" style={{ color: disabledColor }}>
             <div className="ocd-circle-text">
-              <div className="fo-circle ocd-circle">4</div>
-              <p style={{ color: "white", marginTop: "1rem" }}>
-                Market & Competition
-              </p>
+              <div className="fo-circle-disabled ocd-circle-disabled">4</div>
+              <p style={{ marginTop: "1rem" }}>Market & Competition</p>
             </div>
             <div className="ocd-slider-text">
               <div className="ocd-slider"></div>
@@ -133,10 +131,10 @@ const OnboardCompanyDetails2 = (props) => {
             </div>
           </div>
 
-          <div className="ocd-set ocd-set-1">
+          <div className="ocd-set ocd-set-1" style={{ color: disabledColor }}>
             <div className="ocd-circle-text">
-              <div className="fo-circle ocd-circle">5</div>
-              <p style={{ color: "white", marginTop: "1rem" }}>Finances </p>
+              <div className="fo-circle-disabled ocd-circle-disabled">5</div>
+              <p style={{ marginTop: "1rem" }}>Finances </p>
             </div>
             <div className="ocd-slider-text">
               <div className="ocd-slider"></div>
@@ -144,10 +142,10 @@ const OnboardCompanyDetails2 = (props) => {
             </div>
           </div>
 
-          <div className="ocd-set ocd-set-1">
+          <div className="ocd-set ocd-set-1" style={{ color: disabledColor }}>
             <div className="ocd-circle-text">
-              <div className="fo-circle ocd-circle">6</div>
-              <p style={{ color: "white", marginTop: "1rem" }}>KPI</p>
+              <div className="fo-circle-disabled ocd-circle-disabled">6</div>
+              <p style={{ marginTop: "1rem" }}>KPI</p>
             </div>
             <div className="ocd-slider-text">
               <div className="ocd-slider"></div>

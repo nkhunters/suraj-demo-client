@@ -30,6 +30,18 @@
   margin-right: 2rem;
 }
 
+.fo-circle-disabled {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  background: #4037b3;
+  color: "#B9B6EC";
+  text-align: center;
+  padding-top: 4px;
+  margin-top: 1rem;
+  margin-right: 2rem;
+}
+
 .fo-1st-disc {
   display: flex;
   background: rgba(213, 213, 213, 0.4);
