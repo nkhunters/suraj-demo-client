@@ -63,7 +63,7 @@ const ForgetPassword = () => {
       <div className="row login-rw1 justify-center">
         <div className="col-lg-6 col-md-6 col-sm-12 login-rw1-col-1">
           <h6 className="login-rw1-col-1-gsnow text-center">
-            Forget password
+            Forgot password
             <br />
             <span className="gsnow-span-text">
               Enter your email address to continue
@@ -71,7 +71,7 @@ const ForgetPassword = () => {
             <br />
             <div className="line1"></div>
             <p className="forgetpassword-detail-desc">
-              Please enter your email address in hte field below. We will send
+              Please enter your email address in the field below. We will send
               you a confirmation code shortly. Enter the confirmation code to
               reset your password.
             </p>

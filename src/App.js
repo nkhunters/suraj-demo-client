@@ -15,6 +15,7 @@ import SuccessfullyReset from "./components/SuccessfullyReset/SuccessfullyReset"
 import FounderOnboarding from "./components/FounderOnboarding/FounderOnboarding";
 import OnboardCompanyDetails from "./components/OnboardCompanyDetails/OnboardCompanyDetails";
 import OnboardCompanyDetails2 from "./components/OnboardCompanyDetails2/OnboardCompanyDetails2";
+import RegistrationAndVerification from "./components/RegistrationAndVerification/RegistrationAndVerification";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/resetpassword/:token" component={ResetPassword} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={SignUp} />
+          <Route exact path="/verify" component={RegistrationAndVerification} />
           <Route
             exact
             path="/resetsuccessfully"

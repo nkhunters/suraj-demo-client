@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./styles.css";
 import DesignImg from "../../Assets/designimg.jpg";
 import googlelogo from "../../Assets/googlelogo.png";
@@ -22,6 +22,11 @@ const SignUp = () => {
   const [isSuccess, setSuccess] = useState(false);
   const [responseMsg, setResponseMsg] = useState("");
   const [isOpen, setOpen] = useState(false);
+  const [errors, setErrors] = useState({
+    name: null,
+    email: null,
+    password: null,
+  });
 
   const history = useHistory();
 
@@ -40,11 +45,42 @@ const SignUp = () => {
   function validateEmail(value) {
     if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
       setEmailValidated(false);
-    } else setEmailValidated(true);
+      return false;
+    } else {
+      setEmailValidated(true);
+      return true;
+    }
   }
 
   const signup = (e) => {
     e.preventDefault();
+
+    let errs = errors;
+
+    if (name === "") {
+      errs = { ...errs, name: "Please enter your Full Name." };
+    } else {
+      errs = { ...errs, name: null };
+    }
+    if (email === "") {
+      errs = { ...errs, email: "Please enter your Email." };
+    } else if (!isEmailValidated && email.length > 0)
+      errs = { ...errs, email: "Please enter a valid Email." };
+    else {
+      errs = { ...errs, email: null };
+    }
+
+    if (password === "")
+      errs = { ...errs, password: "Please enter a Password." };
+    else {
+      errs = { ...errs, password: null };
+    }
+
+    setErrors(errs);
+
+    if (name === "" || email === "" || password === "" || !isEmailValidated)
+      return;
+
     setDisabled(true);
     axios
       .post("signup", { name, email, password, type })
@@ -53,11 +89,15 @@ const SignUp = () => {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("userId", response.data.user._id);
         localStorage.setItem("name", response.data.user.name);
-        setSuccess(true);
+        localStorage.setItem("email", response.data.user.email);
+
+        history.push("/verify");
+
+        /*setSuccess(true);
         setResponseMsg(
           "Account created successfully. An email verification link has been sent to your email, please verify your email and login."
         );
-        setOpen(true);
+        setOpen(true); */
       })
       .catch((err) => {
         setDisabled(false);
@@ -96,38 +136,58 @@ const SignUp = () => {
               <input
                 type="text"
                 placeholder="Full Name"
-                className="form-control lgn-inpts"
+                className={`form-control lgn-inpts ${
+                  errors.name && "is-invalid"
+                }`}
                 id="exampleInputEmail1"
                 aria-describedby="emailHelp"
                 name="name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
+                onChange={(e) => {
+                  e.target.value.length > 0
+                    ? setErrors({ ...errors, name: null })
+                    : setErrors({
+                        ...errors,
+                        name: "Please enter your Full Name",
+                      });
+                  setName(e.target.value);
+                }}
               />
+              {errors.name && (
+                <div
+                  className="invalid-feedback"
+                  style={{ margin: "auto", width: "527px" }}
+                >
+                  {errors.name}
+                </div>
+              )}
             </div>
             <div className="mb-3">
               <input
                 type="email"
                 placeholder="Email address"
                 className={`form-control lgn-inpts ${
-                  !isEmailValidated && "is-invalid"
+                  errors.email && "is-invalid"
                 }`}
                 id="exampleInputEmail1"
                 aria-describedby="emailHelp"
                 name="email"
                 value={email}
                 onChange={(e) => {
+                  e.target.value.length > 0 ? setErrors({...errors, email: null}) :
+                  setErrors({...errors, email: "Please enter your Email"});
+                  validateEmail(e.target.value) ? setErrors({...errors, email: null}) :
+                  setErrors({...errors, email: "Please enter a valid Email"}); ;
                   setEmail(e.target.value);
-                  validateEmail(e.target.value);
+                  
                 }}
-                required
               />
-              {!isEmailValidated && (
+              {errors.email && (
                 <div
                   className="invalid-feedback"
                   style={{ margin: "auto", width: "527px" }}
                 >
-                  Invalid email address
+                  {errors.email}
                 </div>
               )}
             </div>
@@ -135,12 +195,29 @@ const SignUp = () => {
               <input
                 type="password"
                 placeholder="Password"
-                className="form-control lgn-inpts"
+                className={`form-control lgn-inpts ${
+                  errors.password && "is-invalid"
+                }`}
                 id="exampleInputPassword1"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
+                onChange={(e) =>{
+                  e.target.value.length > 0
+                    ? setErrors({ ...errors, password: null })
+                    : setErrors({
+                        ...errors,
+                        password: "Please enter a Password",
+                      });
+                      setPassword(e.target.value)}
+                } 
               />
+              {errors.password && (
+                <div
+                  className="invalid-feedback"
+                  style={{ margin: "auto", width: "527px" }}
+                >
+                  {errors.password}
+                </div>
+              )}
             </div>
             <div className="mb-3 lgn-btn-head">
               <PasswordStrengthBar
@@ -163,13 +240,13 @@ const SignUp = () => {
               >
                 <FormControlLabel
                   value="investor"
-                  control={<Radio />}
-                  label="i am an investor"
+                  control={<Radio color="primary" />}
+                  label="I am an investor"
                 />
                 <FormControlLabel
                   value="founder"
-                  control={<Radio />}
-                  label="i am a founder"
+                  control={<Radio color="primary" />}
+                  label="I am a founder"
                 />
               </RadioGroup>
             </div>
@@ -197,7 +274,7 @@ const SignUp = () => {
           </form>
           <div className="lng-btm">
             <p>
-              Already have an account?
+              Already have an account?{" "}
               <Link to={"/login"}>
                 <span className="lng-btm-span-text">Login</span>
               </Link>
